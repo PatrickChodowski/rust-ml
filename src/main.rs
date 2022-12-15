@@ -1,18 +1,24 @@
+mod machine_learning;
+mod decision_tree;
 mod utils;
-use utils::{read_data, print_data, read_data2};
+
+use decision_tree::DecisionTree;
+use machine_learning::MachineLearning;
+use utils::{read_data3, DataFrame};
+
 
 fn main() {
-  // If there is no data it might as well fail
-  // let res = read_data("./data/train2.csv").unwrap();
+  
+  let res_data3: DataFrame = read_data3("./data/final_train.csv").unwrap();
+  // initialize decision tree
 
-  // Handle result properly
-  let res_data = read_data("./data/final_train.csv");
-  if let Ok(e) = res_data {
-    print_data(e, 3);
-  } else if let Err(e) = res_data {
-    eprintln!("{}", e);
-  }
+  let dt: DecisionTree<DataFrame> = DecisionTree{
+    ml: MachineLearning{data: res_data3, target: "survived".into(), index: "passenger_id".into()},
+    criterion: "gini".into()
+  };
 
-  let res_data2 = read_data2("./data/final_train.csv").unwrap();
+  dt.info();
+  dt.get_unique_values("fare".into());
+
 
 }
