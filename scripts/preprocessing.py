@@ -33,6 +33,40 @@ ct = ColumnTransformer(
 ).set_output(transform='pandas')
 
 df1 = ct.fit_transform(df0)
+df1.reset_index(inplace=True)
+
+# rename and reorder
+df1.rename(columns={
+  'PassengerId': 'passenger_id',
+  'Fare': 'fare',
+  'Age': 'age',
+  'Embarked_C': 'embarked_c',
+  'Embarked_Q': 'embarked_q',
+  'Embarked_S': 'embarked_s',
+  'Pclass_1': 'pclass1',
+  'Pclass_2': 'pclass2',
+  'Pclass_3': 'pclass3',
+  'Sex_female': 'sex_female',
+  'Sex_male': 'sex_male',
+  'Survived': 'survived',
+  'No_Cabin': 'no_cabin',
+  'No_Family': 'no_family'
+}, inplace=True)
+
+df1 = df1[['passenger_id', 
+           'survived', 
+           'fare', 
+           'age', 
+           'embarked_c', 
+           'embarked_q', 
+           'embarked_s', 
+           'pclass1', 
+           'pclass2', 
+           'pclass3', 
+           'sex_female', 
+           'sex_male', 
+           'no_cabin', 
+           'no_family']]
 
 # Output
 print(df1)
