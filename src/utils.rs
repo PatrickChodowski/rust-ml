@@ -64,19 +64,50 @@ pub fn read_data(data_path: &str) -> Result<Vec<TitanicRecord>, Box<dyn Error>> 
 }
 
 
-// pub fn read_data2(data_path: &str) -> Result<Vec<TitanicRecord>, Box<dyn Error>> {
-//   let mut rdr = csv::Reader::from_path(data_path)?;
-//   let headers = rdr.headers();
-//   println!("CSV Data headers: {:?}", headers);
-//   let mut v: Vec<TitanicRecord> = Vec::new();
+pub fn read_data2(data_path: &str) -> Result<TitanicData, Box<dyn Error>> {
+  let mut rdr = csv::Reader::from_path(data_path)?;
+  let headers = rdr.headers();
+  println!("CSV Data headers: {:?}", headers);
 
-//   for result in rdr.deserialize() {
-//     let record: TitanicRecord = result?;
-//     v.push(record);
-//   }
+  let mut data: TitanicData = TitanicData{PassengerId: Vec::new(),
+                                          Fare: Vec::new(),
+                                          Age: Vec::new(),
+                                          Embarked_C: Vec::new(),
+                                          Embarked_Q: Vec::new(),
+                                          Embarked_S: Vec::new(),
+                                          Pclass_1: Vec::new(),
+                                          Pclass_2: Vec::new(),
+                                          Pclass_3: Vec::new(),
+                                          Sex_female: Vec::new(),
+                                          Sex_male: Vec::new(),
+                                          Survived: Vec::new(),
+                                          No_Cabin: Vec::new(),
+                                          No_Family: Vec::new()
+                              };
 
-//   Ok(v)
-// }
+  for result in rdr.deserialize() {
+    let record: TitanicRecord = result?;
+    data.PassengerId.push(record.PassengerId);
+    data.Fare.push(record.Fare);
+    data.Age.push(record.Age);
+    data.Embarked_C.push(record.Embarked_C);
+    data.Embarked_Q.push(record.Embarked_Q);
+    data.Embarked_S.push(record.Embarked_S);
+    data.Pclass_1.push(record.Pclass_1);
+    data.Pclass_2.push(record.Pclass_2);
+    data.Pclass_3.push(record.Pclass_3);
+    data.Sex_female.push(record.Sex_female);
+    data.Sex_male.push(record.Sex_male);
+    data.Survived.push(record.Survived);
+    data.No_Cabin.push(record.No_Cabin);
+    data.No_Family.push(record.No_Family);
+  }
+
+  Ok(data)
+}
+
+
+
 
 
 pub fn print_data(data: Vec<TitanicRecord>, limit: u32) {

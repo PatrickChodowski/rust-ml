@@ -1,5 +1,5 @@
 mod utils;
-use utils::{read_data, print_data};
+use utils::{read_data, print_data, read_data2};
 
 fn main() {
   // If there is no data it might as well fail
@@ -13,5 +13,6 @@ fn main() {
     eprintln!("{}", e);
   }
 
+  let res_data2 = read_data2("./data/final_train.csv").unwrap();
 
 }
