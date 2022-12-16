@@ -23,5 +23,7 @@ fn main() {
   let fare_values: &mut Vec<f32> = dt.get_unique_values("fare".into());
   check_if_boolean(fare_values);
 
+  dt.ml.query("fare", &mut 3.0, "gt");
+
 
 }
