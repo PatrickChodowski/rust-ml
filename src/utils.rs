@@ -42,7 +42,7 @@ pub fn read_data(data_path: &str) -> Result<Vec<TitanicRecord>, Box<dyn Error>> 
 }
 
 
-pub fn read_data3(data_path: &str) -> Result<DataFrame, Box<dyn Error>> {
+pub fn read_data_to_df(data_path: &str) -> Result<DataFrame, Box<dyn Error>> {
   let mut data = HashMap::new();
   data.insert("passenger_id", Vec::new());
   data.insert("survived",     Vec::new());
@@ -60,10 +60,8 @@ pub fn read_data3(data_path: &str) -> Result<DataFrame, Box<dyn Error>> {
   data.insert("no_family",    Vec::new());
 
   let mut rdr = csv::Reader::from_path(data_path)?;
-  let headers = rdr.headers();
-  // println!("CSV Data headers: {:?}", headers);
+  // let headers = rdr.headers();
 
-  let mut v: Vec<TitanicRecord> = Vec::new();
   for result in rdr.deserialize() {
     let record: TitanicRecord = result?;
     data.entry("passenger_id").or_default().push(record.passenger_id);
