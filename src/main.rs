@@ -2,7 +2,7 @@ mod machine_learning;
 mod decision_tree;
 mod utils;
 
-use decision_tree::DecisionTree;
+use decision_tree::{DecisionTree, check_if_boolean};
 use machine_learning::MachineLearning;
 use utils::{read_data_to_df, DataFrame};
 
@@ -20,7 +20,8 @@ fn main() {
   };
 
   dt.info();
-  dt.get_unique_values("fare".into());
+  let fare_values: &mut Vec<f32> = dt.get_unique_values("fare".into());
+  check_if_boolean(fare_values);
 
 
 }
