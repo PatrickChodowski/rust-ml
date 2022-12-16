@@ -23,7 +23,10 @@ fn main() {
   let fare_values: &mut Vec<f32> = dt.get_unique_values("fare".into());
   check_if_boolean(fare_values);
 
-  dt.ml.query("fare", &mut 3.0, "gt");
+  let v_larger = dt.ml.query_larger("fare", &mut 0.0);
+  let v_smaller = dt.ml.query_smaller("fare", &mut 0.0);
 
+  dt.ml.count_targets(&v_larger);
+  // dt.ml.count_tarsgets(&v_smaller);
 
 }
