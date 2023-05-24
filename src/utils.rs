@@ -19,11 +19,31 @@ pub fn preprocess(mut df: DataFrame) -> DataFrame {
   df = df.drop_many(&cols_to_drop);
   df = df.columns_to_dummies(cols_to_ohe, None).ok().unwrap();
 
- 
-
+  for c in cols_to_scale.iter(){
+    let s: &Series = df.column(c).ok().unwrap();
+    scale_zscore(s);
+  }
 
 
 
   return df;
+
+}
+
+
+
+pub fn scale_zscore(s: &Series) -> &Series {
+
+  let s_mean: f64 = s.mean().unwrap();
+  // let s_stdev: f64 = s.std.unwrap();
+
+  // s.agg_std();
+
+  let s_std = s.std_as_series(0);
+
+  println!("s mean: {:?}", s_mean);
+  println!("s std: {:?}", s_std);
+
+  return s;
 
 }

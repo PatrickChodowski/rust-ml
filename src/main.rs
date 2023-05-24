@@ -13,7 +13,7 @@ fn main() {
   data = preprocess(data);
 
 
-  println!("data: {:?}", data);
+  // println!("data: {:?}", data);
 
   // println!("columns: {:?}", data.get_columns()); metadata and valus
   // println!("columns names: {:?}", data.get_column_names());
