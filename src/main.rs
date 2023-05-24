@@ -4,15 +4,24 @@ mod utils;
 
 // use decision_tree::{DecisionTree, check_if_boolean};
 // use machine_learning::MachineLearning;
-use utils::read_csv;
+use utils::{read_csv, preprocess};
 
 
 fn main() {
+  // if there is no data it might as well fail immediately
+  let mut data = read_csv("./data/train.csv").ok().unwrap();
+  data = preprocess(data);
 
-  let data = read_csv("./data/final_train.csv");
 
   println!("data: {:?}", data);
 
+  // println!("columns: {:?}", data.get_columns()); metadata and valus
+  // println!("columns names: {:?}", data.get_column_names());
+
+  // println!("row 0: {:?}", data.get_row(0));
+
+  
+  // println!("row 0: {:?}", data.get(idx));
   
   // let data: DataFrame = read_data_to_df("./data/final_train.csv").unwrap();
   // // initialize decision tree
