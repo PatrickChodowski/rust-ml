@@ -1,16 +1,14 @@
 
 use polars::prelude::*;
 
-
-
-
+// read the csv
 pub fn read_csv(csv_path: &str) -> PolarsResult<DataFrame> {
     CsvReader::from_path(csv_path)?
             .has_header(true)
             .finish()
 }
 
-
+// Main preprocessing function. 
 pub fn preprocess(mut df: DataFrame) -> DataFrame {
 
   let cols_to_drop: [&str; 6] = ["Name", "Ticket", "Cabin", "family", "Parch", "SibSp"];
@@ -29,8 +27,8 @@ pub fn preprocess(mut df: DataFrame) -> DataFrame {
 }
 
 
-
-pub fn scale_zscore(s: &Series) -> Series {
+// Apply z-score scaling to the series
+fn scale_zscore(s: &Series) -> Series {
 
   let s_mean: f64 = s.mean().unwrap();
   let s_std: f64 = s.std_as_series(0).sum().unwrap();

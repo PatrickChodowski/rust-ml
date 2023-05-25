@@ -1,20 +1,13 @@
 ## Intro
 
-Just trying out machine learning in rust to learn the language better
-
-## Preprocessing
-Done in python as I had no clue how to do it all in Rust, I am sure there is a way but come on
+Machine learning example in Rust and Polars. This repo is supposed to apply Custom decision tree and later other ML algorithms to (example) Titanic dataset imported with Polars dataframe. There are also examples of scaling, one hot encoding and other common preprocessing for ML appled to Polars dataframe.
 
 
-## Run Project
-```
-cargo run
-```
-
-## TODO:
+## todo:
 
 models:
 - logistic regression
 - decision tree
+
 
 
