@@ -12,8 +12,17 @@ pub fn read_csv(csv_path: &str) -> PolarsResult<DataFrame> {
 pub fn preprocess(mut df: DataFrame) -> DataFrame {
 
   let cols_to_drop: [&str; 6] = ["Name", "Ticket", "Cabin", "family", "Parch", "SibSp"];
+
   let cols_to_ohe: Vec<&str> = vec!["Embarked", "Pclass", "Sex"];
   let cols_to_scale: Vec<&str> = vec!["Fare", "Age"];
+  let cols_numeric: Vec<&str> = vec!["Fare", "Age"];
+
+  for c in cols_numeric.iter(){
+    impute_numeric()
+  }
+
+
+
 
   df = df.drop_many(&cols_to_drop);
   df = df.columns_to_dummies(cols_to_ohe, None).ok().unwrap();
@@ -40,4 +49,11 @@ fn scale_zscore(s: &Series) -> Series {
               opt_v.map(|v: f64| (v- s_mean)/s_std)
            }).collect::<Float64Chunked>().into_series();
 
+}
+
+
+
+fn impute_numeric(mut s: Series) -> Series {
+  s = s.fill_null(FillNullStrategy::Mean).ok().unwrap();
+  return s;
 }
