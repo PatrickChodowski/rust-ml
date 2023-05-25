@@ -11,20 +11,8 @@ fn main() {
   // if there is no data it might as well fail immediately
   let mut data = read_csv("./data/train.csv").ok().unwrap();
   data = preprocess(data);
-
-
   // println!("data: {:?}", data);
 
-  // println!("columns: {:?}", data.get_columns()); metadata and valus
-  // println!("columns names: {:?}", data.get_column_names());
-
-  // println!("row 0: {:?}", data.get_row(0));
-
-  
-  // println!("row 0: {:?}", data.get(idx));
-  
-  // let data: DataFrame = read_data_to_df("./data/final_train.csv").unwrap();
-  // // initialize decision tree
 
   // let mut dt: DecisionTree = DecisionTree{
   //   ml: MachineLearning{data: data, 

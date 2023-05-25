@@ -16,15 +16,13 @@ pub fn preprocess(mut df: DataFrame) -> DataFrame {
   let cols_to_drop: [&str; 6] = ["Name", "Ticket", "Cabin", "family", "Parch", "SibSp"];
   let cols_to_ohe: Vec<&str> = vec!["Embarked", "Pclass", "Sex"];
   let cols_to_scale: Vec<&str> = vec!["Fare", "Age"];
+
   df = df.drop_many(&cols_to_drop);
   df = df.columns_to_dummies(cols_to_ohe, None).ok().unwrap();
 
   for c in cols_to_scale.iter(){
-    let s: &Series = df.column(c).ok().unwrap();
-    scale_zscore(s);
+    let _res = df.apply(c, scale_zscore);
   }
-
-
 
   return df;
 
@@ -32,18 +30,16 @@ pub fn preprocess(mut df: DataFrame) -> DataFrame {
 
 
 
-pub fn scale_zscore(s: &Series) -> &Series {
+pub fn scale_zscore(s: &Series) -> Series {
 
   let s_mean: f64 = s.mean().unwrap();
-  // let s_stdev: f64 = s.std.unwrap();
+  let s_std: f64 = s.std_as_series(0).sum().unwrap();
 
-  // s.agg_std();
-
-  let s_std = s.std_as_series(0);
-
-  println!("s mean: {:?}", s_mean);
-  println!("s std: {:?}", s_std);
-
-  return s;
+  return s.f64()
+          .unwrap()
+          .into_iter()
+          .map(|opt_v: Option<f64>| {
+              opt_v.map(|v: f64| (v- s_mean)/s_std)
+           }).collect::<Float64Chunked>().into_series();
 
 }
