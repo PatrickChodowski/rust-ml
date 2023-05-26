@@ -15,7 +15,7 @@ fn main() {
   println!("data: {:?}", data);
   println!("columns: {:?}", data.get_column_names());
 
-  data.set_column_names(names)
+
 
 
 

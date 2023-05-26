@@ -55,24 +55,3 @@ fn impute_mean(s: &Series) -> Series {
 fn impute_forward(s: &Series) -> Series {
   return s.fill_null(FillNullStrategy::Forward(None)).ok().unwrap();
 }
-
-
-fn set_columns_lowercase(mut df: DataFrame){
-  let mut column_names = df.get_column_names();
-
-  for c in column_names.iter(){
-
-    df.rename(c, "embarked").ok().unwrap();
-  }
-
-  // let _res = df.rename("Embarked", "embarked");
-
-  // for c in column_names.iter(){
-  //   let lc_c = &c.to_lowercase().to_string();
-
-
-
-  //   df.rename(*c, &lc_c);
-  // }
-  // return df;
-}
