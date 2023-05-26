@@ -11,7 +11,12 @@ fn main() {
   // if there is no data it might as well fail immediately
   let mut data = read_csv("./data/train.csv").ok().unwrap();
   data = preprocess(data);
-  // println!("data: {:?}", data);
+
+  println!("data: {:?}", data);
+  println!("columns: {:?}", data.get_column_names());
+
+  data.set_column_names(names)
+
 
 
   // let mut dt: DecisionTree = DecisionTree{

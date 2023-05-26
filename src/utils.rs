@@ -12,22 +12,17 @@ pub fn read_csv(csv_path: &str) -> PolarsResult<DataFrame> {
 pub fn preprocess(mut df: DataFrame) -> DataFrame {
 
   let cols_to_drop: [&str; 6] = ["Name", "Ticket", "Cabin", "family", "Parch", "SibSp"];
-
   let cols_to_ohe: Vec<&str> = vec!["Embarked", "Pclass", "Sex"];
   let cols_to_scale: Vec<&str> = vec!["Fare", "Age"];
-  let cols_numeric: Vec<&str> = vec!["Fare", "Age"];
-
-  for c in cols_numeric.iter(){
-    impute_numeric()
-  }
-
-
-
 
   df = df.drop_many(&cols_to_drop);
+
+  let _res = df.apply("Embarked", impute_forward);
+
   df = df.columns_to_dummies(cols_to_ohe, None).ok().unwrap();
 
   for c in cols_to_scale.iter(){
+    let _res = df.apply(c, impute_mean);
     let _res = df.apply(c, scale_zscore);
   }
 
@@ -52,8 +47,32 @@ fn scale_zscore(s: &Series) -> Series {
 }
 
 
+// Apply z-score scaling to the series
+fn impute_mean(s: &Series) -> Series {
+  return s.fill_null(FillNullStrategy::Mean).ok().unwrap();
+}
 
-fn impute_numeric(mut s: Series) -> Series {
-  s = s.fill_null(FillNullStrategy::Mean).ok().unwrap();
-  return s;
+fn impute_forward(s: &Series) -> Series {
+  return s.fill_null(FillNullStrategy::Forward(None)).ok().unwrap();
+}
+
+
+fn set_columns_lowercase(mut df: DataFrame){
+  let mut column_names = df.get_column_names();
+
+  for c in column_names.iter(){
+
+    df.rename(c, "embarked").ok().unwrap();
+  }
+
+  // let _res = df.rename("Embarked", "embarked");
+
+  // for c in column_names.iter(){
+  //   let lc_c = &c.to_lowercase().to_string();
+
+
+
+  //   df.rename(*c, &lc_c);
+  // }
+  // return df;
 }
