@@ -8,10 +8,13 @@ use utils::{read_csv, preprocess};
 
 
 fn main() {
-  // if there is no data it might as well fail immediately
+
   let mut data = read_csv("./data/train.csv").ok().unwrap();
   data = preprocess(data);
-  let ml = ML::new(&mut data, "Survived", "PassengerId", MLType::Classification);
+  let mut ml = ML::new(&mut data, "Survived", "PassengerId", MLType::Classification);
+  ml.set_colnames();
+
+
   let dt = DecisionTree::init(&ml, DTCritetion::Gini);
   dt.train();
 

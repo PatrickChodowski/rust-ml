@@ -747,6 +747,7 @@ dependencies = [
  "csv",
  "itertools",
  "polars",
+ "rand",
  "serde",
 ]
 

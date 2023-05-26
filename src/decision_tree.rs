@@ -2,23 +2,22 @@
 // use core::cmp::Ordering::Equal;
 use crate::machine_learning::ML;
 
-// fn split_data(split_variable: String, split_value: f32) {
-// }
+use polars::prelude::*;
+use rand::Rng;
 
-// pub fn check_if_boolean(unique_values: &mut Vec<f32>) -> bool {
-//   return unique_values.len() <= 2;
-// }
 
+#[derive(Clone)]
 pub enum DTCritetion {
   Gini,
   InformationGain
 }
 
-
-
+#[derive(Clone)]
 pub struct DecisionTree<'a> {
   pub ml: &'a ML<'a>,
   pub criterion: DTCritetion,
+
+  // pub checked_splits: HashMap<&str, >
 }
 
 impl<'a> DecisionTree <'_> {
@@ -28,17 +27,63 @@ impl<'a> DecisionTree <'_> {
 
   pub fn train(self) {
     println!("brrrr... training");
+
+    self.find_split();
   }
+
+  // Pick random value from series
+  pub fn pick_split_value(&'a self, s: &'a Series) -> AnyValue {
+    let mut rng = rand::thread_rng();
+    let index = rng.gen_range(0..s.len()) as usize;
+    let val: AnyValue = s.get(index).ok().unwrap().clone();
+    return val;
+  }
+
+
+
+
+  fn find_split(self){
+
+    for col in self.ml.colnames.iter(){
+      let ser: Series = self.ml.df.column(col).ok().unwrap().clone();
+      let unique_vs: Series = ser.unique().ok().unwrap();
+      let value_count: usize = unique_vs.len();
+      let rand_v = self.pick_split_value(&unique_vs);
+
+
+      self.get_indices(col, rand_v);
+
+
+      if value_count == 2 {
+
+      } else {
+
+      }
+
+    }
+
+  }
+
+  fn get_indices(&self, col: &str, val: AnyValue)  -> PolarsResult<DataFrame> {
+    let mask = self.ml.df.column(col)?.is_not_null();
+
+    self.ml.df.filter(&mask)
+  }
+
+
+  // fn get_indices(self, col: &str, val: AnyValue) -> Vec<bool> {
+  //   let mut v: Vec<bool> = Vec::with_capacity(2000);
+  //   // df.filter(&mask)
+  //   // self.ml.df.filter(mask)
+  //   // self.ml.df
+  //   return v;
+
+  // }
+
+
 
 }
 
-
-
-
-// impl DecisionTree{
-//   pub fn info(&self){
-//     println!("Decision Tree. Criterion: {}; Index: {}; Target: {}", &self.criterion, &self.ml.index, &self.ml.target);
-//   }
 
 //   pub fn gini_impurity(&self){
 //     // Gini = 1 - sum(pi)^2
@@ -50,18 +95,3 @@ impl<'a> DecisionTree <'_> {
 //     todo!()
 //   }
 
-//   pub fn get_unique_values(&mut self, variable_name: &'a str) -> &mut Vec<f32> {
-
-//     println!("Getting unique values for {}", variable_name);
-//     let base_v = self.ml.data.entry(variable_name).or_default(); 
-//     base_v.sort_by(|a, b| a.partial_cmp(b).unwrap_or(Equal));
-//     base_v.dedup();
-
-//     // let iter_v = base_v.into_iter();
-//     // for a in iter_v {
-//     //   println!("{}", a)
-//     // }
-//     println!("Found {} unique values for {}", base_v.len(), variable_name);
-//     return base_v;
-//   }
-// }
