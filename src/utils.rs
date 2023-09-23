@@ -19,7 +19,7 @@ pub fn preprocess(mut df: DataFrame) -> DataFrame {
 
   let _res = df.apply("Embarked", impute_forward);
 
-  df = df.columns_to_dummies(cols_to_ohe, None).ok().unwrap();
+  df = df.columns_to_dummies(cols_to_ohe, None, false).ok().unwrap();
 
   for c in cols_to_scale.iter(){
     let _res = df.apply(c, impute_mean);
